@@ -1,102 +1,55 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="hHh lpR lFf" class="">
+    <q-header elevated class="bg-primary text-white tw-flex tw-px-6 tw-items-center">
+      <q-toolbar class="q-pa-none">
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          Quasar App
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+
+      <div class="tw-flex tw-items-center tw-gap-2 tw-flex-nowrap tw-cursor-default">
+        <h5 class="tw-text-nowrap">JOSUE CARVALHO</h5>
+        <div class="tw-rounded-full tw-bg-gray-300">
+          <q-icon class="tw-text-blue-950" name="person" size="24px" />
+        </div>
+      </div>
     </q-header>
 
     <q-drawer
+      class="tw-bg-blue-950 tw-text-white tw-rounded-r-xl tw-p-8"
       v-model="leftDrawerOpen"
-      show-if-above
-      bordered
+      side="left"
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in listLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="tw-bg-gray-300 tw-min-h-screen">
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import type { EssentialLinkProps } from 'components/EssentialLink.vue';
+import EssentialLink from 'components/EssentialLink.vue';
 
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+const leftDrawerOpen = ref(true);
+
+const listLinks: EssentialLinkProps[] = [
+  { title: 'Home', icon: 'dashboard', link: '/' },
+  { title: 'Favoritos', icon: 'group', link: '/favoritos' },
+  { title: 'Categorias', icon: 'inventory_2', link: '/categorias' },
+  { title: 'Sobre', icon: 'engineering', link: '/sobre' },
 ];
 
-const leftDrawerOpen = ref(false);
-
-function toggleLeftDrawer () {
+function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 </script>

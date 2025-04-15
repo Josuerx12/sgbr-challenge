@@ -1,43 +1,41 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
-  </q-page>
+  <div class="tw-p-10">
+    <h2 class="tw-text-3xl tw-font-semibold tw-my-8">Paginal Inicial</h2>
+
+    <div class="tw-container tw-bg-white">
+      <div v-if="trendings" class="tw-flex tw-flex-wrap tw-gap-4 tw-justify-between tw-p-5">
+        <div v-for="item of trendings" :key="item.id" class="tw-w-56">
+          <img
+            class="tw-w-56 tw-h-56 tw-object-fit tw-rounded-md"
+            :src="item.images.preview_gif.url"
+            :alt="'imagem do item: ' + item.slug"
+          />
+          <p class="tw-text-black text-center tw-mt-3">{{ item.slug }}</p>
+        </div>
+      </div>
+
+      <div v-else>
+        <p>Nenhum gif encontrado!</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+import { api } from 'src/boot/axios';
+import { onMounted, ref } from 'vue';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
+type Trending = any;
 
-const meta = ref<Meta>({
-  totalCount: 1200
+const trendings = ref<Trending[]>([]);
+
+onMounted(async () => {
+  const apiKey = import.meta.env.VITE_SECRET_KEY;
+
+  const res = await api.get<{ data: Trending[] }>(`/trending?api_key=${apiKey}`);
+
+  console.log(res.data.data);
+
+  trendings.value = res.data?.data;
 });
 </script>
