@@ -22,20 +22,15 @@
 </template>
 
 <script setup lang="ts">
-import { api } from 'src/boot/axios';
-import { onMounted, ref } from 'vue';
+import { useGifStore } from 'src/stores/gif-store';
+import { onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-type Trending = any;
+const store = useGifStore();
 
-const trendings = ref<Trending[]>([]);
+const { gifs: trendings } = storeToRefs(store);
 
 onMounted(async () => {
-  const apiKey = import.meta.env.VITE_SECRET_KEY;
-
-  const res = await api.get<{ data: Trending[] }>(`/trending?api_key=${apiKey}`);
-
-  console.log(res.data.data);
-
-  trendings.value = res.data?.data;
+  await store.fetchGifs();
 });
 </script>
