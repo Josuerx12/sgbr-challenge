@@ -19,18 +19,16 @@
       </div>
     </q-header>
 
-    <q-drawer
-      class="tw-bg-blue-950 tw-text-white tw-rounded-r-xl tw-p-8"
-      v-model="leftDrawerOpen"
-      side="left"
-    >
+    <q-drawer class="tw-bg-blue-950 tw-text-white tw-p-8" v-model="leftDrawerOpen" side="left">
       <q-list>
         <EssentialLink v-for="link in listLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
     <q-page-container class="tw-bg-gray-300 tw-min-h-screen">
-      <router-view />
+      <main class="tw-p-10">
+        <router-view />
+      </main>
     </q-page-container>
   </q-layout>
 </template>
